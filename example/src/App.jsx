@@ -38,10 +38,10 @@ const firebaseApp = firebase.initializeApp(firebaseConfig);
  */
 class App extends React.Component {
   uiConfig = {
-    signInFlow: 'popup',
+    signInFlow: 'redirect',
     signInOptions: [
-      firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-      firebase.auth.EmailAuthProvider.PROVIDER_ID,
+      firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+
     ],
     callbacks: {
       signInSuccessWithAuthResult: () => false,
@@ -57,6 +57,7 @@ class App extends React.Component {
    */
   componentDidMount() {
     this.unregisterAuthObserver = firebaseApp.auth().onAuthStateChanged((user) => {
+      console.log(user);
       this.setState({isSignedIn: !!user});
     });
   }
@@ -87,6 +88,7 @@ class App extends React.Component {
         {this.state.isSignedIn &&
           <div className={styles.signedIn}>
             Hello {firebaseApp.auth().currentUser.displayName}. You are now signed In!
+            <span>Email: {firebaseApp.auth().currentUser.email}</span>
             <a className={styles.button} onClick={() => firebaseApp.auth().signOut()}>Sign-out</a>
           </div>
         }
